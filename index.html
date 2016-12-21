@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2//EN">
+
+<html>
+<head>
+  
+  <title></title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+  
+  <script src="https://code.jquery.com/jquery-3.1.1.min.js" crossorigin="anonymous"></script>
+  <script src="http://threejs.org/build/three.min.js"></script>
+
+  
+  <link rel="stylesheet" type="text/css"
+	href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.5/css/bootstrap.min.css" media="screen" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.5/js/bootstrap.min.js"></script>
+
+  <script src="./jquery.bootstrap-touchspin.min.js"></script>  
+  <link rel="stylesheet" type="text/css" href="./jquery.bootstrap-touchspin.min.css" media="screen" />
+  <script src="http://threejs.org/examples/js/loaders/OBJLoader.js"></script>
+</head>
+<body>
+  <script>
+    $(function(){
+	$('label').css('width', '8em')
+	$(".form-control").TouchSpin({ min: -1000000000, max: 1000000000}).css('width', '6em')
+	$('#top, #side, #front, #data').css('height', window.innerHeight * 0.34)
+	$('#front, #data').css('margin-top', window.innerHeight * 0.01)
+	$('#top, #side').css('margin-bottom', window.innerHeight * 0.01)
+	// $('#top, #front').each(function(i, e){ $(e).width( $(e).width() 0.9 ) })
+    })
+  </script>
+  <style>
+    .flat { border: thin solid grey } 
+  </style>
+<div class="container-fluid">
+  <div class="row">
+    <div id="renderer" class="col-md-6 col-md-offset-0"></div>
+    <div id="top" class="col-md-3 flat"></div>
+    <div id="side" class="col-md-3 flat"></div>
+    <div id="front" class="col-md-3 flat"></div>
+    <div id="data" class="col-md-3 flat">
+      <table>
+    	<tr><td>min</td><td id="min"></td></tr>
+    	<tr><td>max</td><td id="max"></td></tr>
+    	<tr><td>getSize()</td><td id="getsize"></td></tr>
+	<tr><td>uuid</td><td id="uuid"></td></tr>
+	<tr><td>part count</td><td id="count"></td></tr>
+      </table>
+    </div>
+   
+  </div>
+  <div class="row">
+    <form class="form-inline">
+      <div class="col-md-3">
+	<div class="form-group">
+	  <label for="rotation_x">Rotation X&emsp;</label>
+	  <input type="text" class="form-control" id="rotation_x" placeholder="rotation x">
+	</div>
+	<div class="form-group">
+	  <label for="rotation_y">Rotation Y&emsp;</label>
+	  <input type="teyt" class="form-control" id="rotation_y" placeholder="rotation y">
+	</div>
+	<div class="form-group">
+	  <label for="rotation_z">Rotation Z&emsp;</label>
+	  <input type="text" class="form-control" id="rotation_z" placeholder="rotation z">
+	</div>
+      </div>
+      <div class="col-md-3">
+	<div class="form-group">
+	  <label for="camera_x">Camera X&emsp;</label>
+	  <input type="text" class="form-control" id="camera_x" placeholder="camera x">
+	</div>
+	<div class="form-group">
+	  <label for="camera_y">Camera Y&emsp;</label>
+	  <input type="teyt" class="form-control" id="camera_y" placeholder="camera y">
+	</div>
+	<div class="form-group">
+	  <label for="camera_z">Camera Z&emsp;</label>
+	  <input type="text" class="form-control" id="camera_z" placeholder="camera z">
+	</div>
+      </div>
+      <div class="col-md-3">
+	<div class="form-group">
+	  <label for="translate_x">Translate X&emsp;</label>
+	  <input type="text" class="form-control" id="translate_x" placeholder="translate x">
+	</div>
+	<div class="form-group">
+	  <label for="translate_y">Translate Y&emsp;</label>
+	  <input type="teyt" class="form-control" id="translate_y" placeholder="translate y">
+	</div>
+	<div class="form-group">
+	  <label for="translate_z">Translate Z&emsp;</label>
+	  <input type="text" class="form-control" id="translate_z" placeholder="translate z">
+	</div>
+      </div>
+      <div class="col-md-3">
+	<div class="form-group">
+	  <label for="light_x">Light X&emsp;</label>
+	  <input type="text" class="form-control" id="light_x" placeholder="light x">
+	</div>
+	<div class="form-group">
+	  <label for="light_y">Light Y&emsp;</label>
+	  <input type="teyt" class="form-control" id="light_y" placeholder="light y">
+	</div>
+	<div class="form-group">
+	  <label for="light_z">Light Z&emsp;</label>
+	  <input type="text" class="form-control" id="light_z" placeholder="light z">
+	</div>
+      </div>
+      <hr />
+      <div class="col-md-3">
+	<div class="form-group">
+	  <label for="scale">Scale&emsp;</label>
+	  <input type="text" class="form-control" id="scale" placeholder="scale">
+	  </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+</body>
+<script src="./obj_loader.js"></script>
+</html>
