@@ -49,13 +49,16 @@ function init() {
     // model
     var loader = new THREE.OBJLoader( manager );
     loader.load( './Superstar/Superstar.obj', function ( object ) {
+	var count = 0;
 	object.traverse( function ( child ) {
+	    count++;
 	    if ( child instanceof THREE.Mesh ) {
 		//child.material.map = texture;
 	    }
 	} );
+	console.log(count)
 	
-	object.rotation.y = 90 * Math.PI / 180;
+	
 
         object.scale.x = 600;
         object.scale.y = 600;
@@ -97,6 +100,8 @@ function render() {
     _.chain(xyz).each(function(e, i){
 	obj.scale[e] = parseFloat($('#scale').val());
     })
+
+    obj.rotation.y = 90 * Math.PI / 180;
     
     obj.translateX(parseFloat($('#translate_x').val()));
     obj.translateY(parseFloat($('#translate_y').val()));
@@ -104,11 +109,12 @@ function render() {
     
     var box = new THREE.Box3().setFromObject( obj );
 
-    $('#min').html(_.chain(xyz).map(function(e, i){ return Math.round(100 * box.min[e]) / 100 } ).value().join(" | ") );
-    $('#max').html(_.chain(xyz).map(function(e, i){ return Math.round(100 * box.max[e]) / 100 } ).value().join(" | ") );
-    $('#getsize').html(_.chain(xyz).map(function(e, i){ return Math.round(100 * box.getSize()[e]) / 100 } ).value().join(" | ") );
-    
-    $('#getsize').html(_.chain(xyz).map(function(e, i){ return Math.round(100 * box.getSize()[e]) / 100 } ).value().join(" | ") );
+
+    _.chain(xyz).map(function(e, i){
+	$('#min .' + e).html(Math.round(100 * box.min[e]) / 100);
+	$('#max .' + e).html(Math.round(100 * box.max[e]) / 100);
+	$('#getSize .' + e).html(Math.round(100 * box.getSize()[e]) / 100);
+    })
 }
 
 

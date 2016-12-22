@@ -8,7 +8,8 @@
   
   <script src="https://code.jquery.com/jquery-3.1.1.min.js" crossorigin="anonymous"></script>
   <script src="http://threejs.org/build/three.min.js"></script>
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
+  
   
   <link rel="stylesheet" type="text/css"
 	href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.5/css/bootstrap.min.css" media="screen" />
@@ -17,6 +18,9 @@
   <script src="./jquery.bootstrap-touchspin.min.js"></script>  
   <link rel="stylesheet" type="text/css" href="./jquery.bootstrap-touchspin.min.css" media="screen" />
   <script src="http://threejs.org/examples/js/loaders/OBJLoader.js"></script>
+  <style>
+    td.x, td.y, td.z { text-align: right; width: 5em } 
+  </style>
 </head>
 <body>
   <script>
@@ -40,9 +44,24 @@
     <div id="front" class="col-md-3 flat"></div>
     <div id="data" class="col-md-3 flat">
       <table>
-    	<tr><td>min</td><td id="min"></td></tr>
-    	<tr><td>max</td><td id="max"></td></tr>
-    	<tr><td>getSize()</td><td id="getsize"></td></tr>
+    	<tr id="min">
+	  <td>min</td>
+	  <td class="x"></td>
+	  <td class="y"></td>
+	  <td class="z"></td>
+	</tr>
+    	<tr id="max">
+	  <td>max</td>
+	  <td class="x"></td>
+	  <td class="y"></td>
+	  <td class="z"></td>
+	</tr>
+    	<tr id="getSize">
+	  <td>getSize()</td>
+	  <td class="x"></td>
+	  <td class="y"></td>
+	  <td class="z"></td>
+	</tr>
 	<tr><td>uuid</td><td id="uuid"></td></tr>
 	<tr><td>part count</td><td id="count"></td></tr>
       </table>
