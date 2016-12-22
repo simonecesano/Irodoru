@@ -15,20 +15,22 @@ var height_factor = 0.7;
 var r_width  = $('#renderer').width();
 var r_height = window.innerHeight * height_factor;
 
+var xyz = ["x", "y", "z"];
+
 init();
 animate();
 
 
 function init() {
-    
+    // container
     container = document.createElement( 'div' );
     $('#renderer').append( container );
-    
+
+    // camera
     camera = new THREE.PerspectiveCamera( 45, r_width / r_height, 1, 2000 );
     camera.position.z = 600;
     
     // scene
-    
     scene = new THREE.Scene();
     
     var ambient = new THREE.AmbientLight( 0x101030 );
@@ -39,31 +41,22 @@ function init() {
     scene.add( directionalLight );
     
     // texture
-    
     var manager = new THREE.LoadingManager();
     manager.onProgress = function ( item, loaded, total ) {
-	
 	console.log( item, loaded, total );
-	
     };
     
     // model
     var loader = new THREE.OBJLoader( manager );
     loader.load( './Superstar/Superstar.obj', function ( object ) {
-	
 	object.traverse( function ( child ) {
-	    
 	    if ( child instanceof THREE.Mesh ) {
-		
 		//child.material.map = texture;
-		
 	    }
-	    
 	} );
 	
 	object.rotation.y = 90 * Math.PI / 180;
-        // object.rotation.x = 20* Math.PI / 180;
-        // object.rotation.z = 20* Math.PI / 180;
+
         object.scale.x = 600;
         object.scale.y = 600;
         object.scale.z = 600;
@@ -75,9 +68,6 @@ function init() {
     renderer = new THREE.WebGLRenderer();
     renderer.setSize( r_width, r_height );
     container.appendChild( renderer.domElement );
-    
-    document.addEventListener( 'mousemove', onDocumentMouseMove, false );
-    
     window.addEventListener( 'resize', onWindowResize, false );
     
 }
@@ -95,24 +85,36 @@ function onWindowResize() {
     renderer.setSize( r_width, r_height );
 }
 
-function onDocumentMouseMove( event ) {
-    mouseX = ( event.clientX - windowHalfX ) / 2;
-    mouseY = ( event.clientY - windowHalfY ) / 2;
-}
-
 function animate() {
     requestAnimationFrame( animate );
     render();
 }
 
 function render() {
-    // obj.rotation.x += (0.2*(Math.PI / 180));
-    // obj.rotation.x %=360;
-    
-    // camera.position.x += ( mouseX - camera.position.x ) * .05;
-    // camera.position.y += ( - mouseY - camera.position.y ) * .05;
-    
     camera.lookAt( scene.position );
-    
     renderer.render( scene, camera );
+
+    obj.translateX(parseFloat($('#translate_x').val()));
+    obj.translateY(parseFloat($('#translate_y').val()));
+    obj.translateZ(parseFloat($('#translate_z').val()));
+    
+    var box = new THREE.Box3().setFromObject( obj );
+
+    $('#min').html(_.chain(xyz).map(function(e, i){ return Math.round(100 * box.min[e]) / 100 } ).value().join(" | ") );
+    $('#max').html(_.chain(xyz).map(function(e, i){ return Math.round(100 * box.max[e]) / 100 } ).value().join(" | ") );
+    $('#getsize').html(_.chain(xyz).map(function(e, i){ return Math.round(100 * box.getSize()[e]) / 100 } ).value().join(" | ") );
+    
+    $('#getsize').html(_.chain(xyz).map(function(e, i){ return Math.round(100 * box.getSize()[e]) / 100 } ).value().join(" | ") );
 }
+
+
+$(function(){
+    $('input').change(function(){
+
+
+	var box = new THREE.Box3().setFromObject( obj );
+
+
+	
+    })
+})
