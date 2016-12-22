@@ -35,7 +35,85 @@
 <div class="container-fluid">
   <div class="row">
     <div id="renderer" class="col-md-6 col-md-offset-0"></div>
-    <div id="things" class="col-md-6 col-md-offset-0">foo</div>
+    <div id="top" class="col-md-3 flat"></div>
+    <div id="side" class="col-md-3 flat"></div>
+    <div id="front" class="col-md-3 flat"></div>
+    <div id="data" class="col-md-3 flat">
+      <table>
+    	<tr><td>min</td><td id="min"></td></tr>
+    	<tr><td>max</td><td id="max"></td></tr>
+    	<tr><td>getSize()</td><td id="getsize"></td></tr>
+	<tr><td>uuid</td><td id="uuid"></td></tr>
+	<tr><td>part count</td><td id="count"></td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="row">
+    <form class="form-inline">
+      <div class="col-md-3">
+	<div class="form-group">
+	  <label for="rotation_x">Rotation X&emsp;</label>
+	  <input type="text" class="form-control" id="rotation_x" placeholder="rotation x">
+	</div>
+	<div class="form-group">
+	  <label for="rotation_y">Rotation Y&emsp;</label>
+	  <input type="teyt" class="form-control" id="rotation_y" placeholder="rotation y">
+	</div>
+	<div class="form-group">
+	  <label for="rotation_z">Rotation Z&emsp;</label>
+	  <input type="text" class="form-control" id="rotation_z" placeholder="rotation z">
+	</div>
+      </div>
+      <div class="col-md-3">
+	<div class="form-group">
+	  <label for="camera_x">Camera X&emsp;</label>
+	  <input type="text" class="form-control" id="camera_x" placeholder="camera x">
+	</div>
+	<div class="form-group">
+	  <label for="camera_y">Camera Y&emsp;</label>
+	  <input type="teyt" class="form-control" id="camera_y" placeholder="camera y">
+	</div>
+	<div class="form-group">
+	  <label for="camera_z">Camera Z&emsp;</label>
+	  <input type="text" class="form-control" id="camera_z" placeholder="camera z">
+	</div>
+      </div>
+      <div class="col-md-3">
+	<div class="form-group">
+	  <label for="translate_x">Translate X&emsp;</label>
+	  <input type="text" class="form-control" id="translate_x" placeholder="translate x">
+	</div>
+	<div class="form-group">
+	  <label for="translate_y">Translate Y&emsp;</label>
+	  <input type="teyt" class="form-control" id="translate_y" placeholder="translate y">
+	</div>
+	<div class="form-group">
+	  <label for="translate_z">Translate Z&emsp;</label>
+	  <input type="text" class="form-control" id="translate_z" placeholder="translate z">
+	</div>
+      </div>
+      <div class="col-md-3">
+	<div class="form-group">
+	  <label for="light_x">Light X&emsp;</label>
+	  <input type="text" class="form-control" id="light_x" placeholder="light x">
+	</div>
+	<div class="form-group">
+	  <label for="light_y">Light Y&emsp;</label>
+	  <input type="teyt" class="form-control" id="light_y" placeholder="light y">
+	</div>
+	<div class="form-group">
+	  <label for="light_z">Light Z&emsp;</label>
+	  <input type="text" class="form-control" id="light_z" placeholder="light z">
+	</div>
+      </div>
+      <hr />
+      <div class="col-md-3">
+	<div class="form-group">
+	  <label for="scale">Scale&emsp;</label>
+	  <input type="text" class="form-control" id="scale" placeholder="scale">
+	</div>
+      </div>
+    </form>
   </div>    
 </div>
 
