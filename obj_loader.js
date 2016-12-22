@@ -94,6 +94,10 @@ function render() {
     camera.lookAt( scene.position );
     renderer.render( scene, camera );
 
+    _.chain(xyz).each(function(e, i){
+	obj.scale[e] = parseFloat($('#scale').val());
+    })
+    
     obj.translateX(parseFloat($('#translate_x').val()));
     obj.translateY(parseFloat($('#translate_y').val()));
     obj.translateZ(parseFloat($('#translate_z').val()));
