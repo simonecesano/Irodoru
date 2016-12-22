@@ -61,9 +61,9 @@ function init() {
 	    
 	} );
 	
-	object.position.x = - 60;
-        object.rotation.x = 20* Math.PI / 180;
-        object.rotation.z = 20* Math.PI / 180;
+	object.rotation.y = 90 * Math.PI / 180;
+        // object.rotation.x = 20* Math.PI / 180;
+        // object.rotation.z = 20* Math.PI / 180;
         object.scale.x = 600;
         object.scale.y = 600;
         object.scale.z = 600;
@@ -106,11 +106,11 @@ function animate() {
 }
 
 function render() {
-    obj.rotation.x += (0.2*(Math.PI / 180));
-    obj.rotation.x %=360;
+    // obj.rotation.x += (0.2*(Math.PI / 180));
+    // obj.rotation.x %=360;
     
-    camera.position.x += ( mouseX - camera.position.x ) * .05;
-    camera.position.y += ( - mouseY - camera.position.y ) * .05;
+    // camera.position.x += ( mouseX - camera.position.x ) * .05;
+    // camera.position.y += ( - mouseY - camera.position.y ) * .05;
     
     camera.lookAt( scene.position );
     
