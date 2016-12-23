@@ -1,3 +1,5 @@
+
+
 var clock = new THREE.Clock();
 var delta = clock.getDelta(); // seconds.
 var rotateAngle = Math.PI / 2 * delta;   // pi/2 radians (90 degrees) per second
@@ -29,7 +31,7 @@ function init() {
     // camera
     camera = new THREE.PerspectiveCamera( 45, r_width / r_height, 1, 2000 );
     camera.position.z = 600;
-    
+    camera_pos = camera.position;
     // scene
     scene = new THREE.Scene();
     
@@ -48,7 +50,13 @@ function init() {
     
     // model
     var loader = new THREE.OBJLoader( manager );
-    loader.load( './Superstar/Superstar.obj', function ( object ) {
+    var file = './Superstar/Superstar.obj';
+
+    // var loader = new THREE.FBXLoader( manager );
+    // var file = './superstar.fbx';
+    
+
+    loader.load( file , function ( object ) {
 	var count = 0;
 	object.traverse( function ( child ) {
 	    count++;
@@ -58,20 +66,19 @@ function init() {
 	} );
 	console.log(count)
 	
-	
-
         object.scale.x = 600;
         object.scale.y = 600;
         object.scale.z = 600;
         obj = object
 	scene.add( obj );
-	
+	console.log(obj.matrixWorld);	
     } );
     
     renderer = new THREE.WebGLRenderer();
     renderer.setSize( r_width, r_height );
     container.appendChild( renderer.domElement );
     window.addEventListener( 'resize', onWindowResize, false );
+    // console.log(camera.lookAt())
     
 }
 
@@ -93,9 +100,11 @@ function animate() {
     render();
 }
 
+
+
+
 function render() {
-    camera.lookAt( scene.position );
-    renderer.render( scene, camera );
+
 
     _.chain(xyz).each(function(e, i){
 	obj.scale[e] = parseFloat($('#scale').val());
@@ -109,22 +118,26 @@ function render() {
     
     var box = new THREE.Box3().setFromObject( obj );
 
-
+    var screen = obj.screenPosition(camera, 'min');
+    var look_at = scene.position;
+    
     _.chain(xyz).map(function(e, i){
 	$('#min .' + e).html(Math.round(100 * box.min[e]) / 100);
 	$('#max .' + e).html(Math.round(100 * box.max[e]) / 100);
 	$('#getSize .' + e).html(Math.round(100 * box.getSize()[e]) / 100);
+	$('#screen .' + e).html(Math.round(100 * screen[e]) / 100);
+
+	camera.position[e] = parseFloat($('#camera_' + e).val() || '0');
+	$('#camera_pos .' + e).html(Math.round(100 * camera.position[e]) / 100);
+
+	camera.position[e] = parseFloat($('#camera_' + e).val() || '0');
+	
+	look_at[e] = look_at[e] + parseFloat($('#look_at_' + e).val() || '0');
     })
+
+
+    camera.lookAt( look_at );
+    renderer.render( scene, camera );
 }
 
 
-$(function(){
-    $('input').change(function(){
-
-
-	var box = new THREE.Box3().setFromObject( obj );
-
-
-	
-    })
-})

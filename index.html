@@ -8,6 +8,7 @@
   
   <script src="https://code.jquery.com/jquery-3.1.1.min.js" crossorigin="anonymous"></script>
   <script src="http://threejs.org/build/three.min.js"></script>
+  
   <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
   
   
@@ -18,6 +19,10 @@
   <script src="./jquery.bootstrap-touchspin.min.js"></script>  
   <link rel="stylesheet" type="text/css" href="./jquery.bootstrap-touchspin.min.css" media="screen" />
   <script src="http://threejs.org/examples/js/loaders/OBJLoader.js"></script>
+  <script src="http://threejs.org/examples/js/loaders/FBXLoader.js"></script>
+  <script src="./three.screencoordinates.js"></script>
+  <script src="./ui.js"></script>
+
   <style>
     td.x, td.y, td.z { text-align: right; width: 5em } 
   </style>
@@ -62,13 +67,27 @@
 	  <td class="y"></td>
 	  <td class="z"></td>
 	</tr>
+    	<tr id="screen">
+	  <td>screen</td>
+	  <td class="x"></td>
+	  <td class="y"></td>
+	</tr>
+
+    	<tr id="camera_pos">
+	  <td>camera position</td>
+	  <td class="x"></td>
+	  <td class="y"></td>
+	  <td class="z"></td>
+	</tr>
+
+
 	<tr><td>uuid</td><td id="uuid"></td></tr>
 	<tr><td>part count</td><td id="count"></td></tr>
       </table>
     </div>
   </div>
   <div class="row">
-    <form class="form-inline">
+    <form class="form-inline" id="scene">
       <div class="col-md-3">
 	<div class="form-group">
 	  <label for="rotation_x">Rotation X&emsp;</label>
@@ -86,17 +105,32 @@
       <div class="col-md-3">
 	<div class="form-group">
 	  <label for="camera_x">Camera X&emsp;</label>
-	  <input type="text" class="form-control" id="camera_x" placeholder="camera x">
+	  <input type="text" class="form-control" id="camera_x" placeholder="camera x" value="0">
 	</div>
 	<div class="form-group">
 	  <label for="camera_y">Camera Y&emsp;</label>
-	  <input type="teyt" class="form-control" id="camera_y" placeholder="camera y">
+	  <input type="text" class="form-control" id="camera_y" placeholder="camera y" value="0">
 	</div>
 	<div class="form-group">
 	  <label for="camera_z">Camera Z&emsp;</label>
-	  <input type="text" class="form-control" id="camera_z" placeholder="camera z">
+	  <input type="text" class="form-control" id="camera_z" placeholder="camera z" value="60">
 	</div>
       </div>
+      <div class="col-md-3">
+	<div class="form-group">
+	  <label for="look_at_x">Look at X&emsp;</label>
+	  <input type="text" class="form-control" id="look_at_x" placeholder="look at x" value="0">
+	</div>
+	<div class="form-group">
+	  <label for="look_at_y">Look at Y&emsp;</label>
+	  <input type="text" class="form-control" id="look_at_y" placeholder="look at y" value="0">
+	</div>
+	<div class="form-group">
+	  <label for="look_at_z">Look at Z&emsp;</label>
+	  <input type="text" class="form-control" id="look_at_z" placeholder="look at z" value="0">
+	</div>
+      </div>
+
       <div class="col-md-3">
 	<div class="form-group">
 	  <label for="translate_x">Translate X&emsp;</label>
@@ -129,7 +163,7 @@
       <div class="col-md-3">
 	<div class="form-group">
 	  <label for="scale">Scale&emsp;</label>
-	  <input type="text" class="form-control" id="scale" placeholder="scale">
+	  <input type="text" class="form-control" id="scale" value="scale" placeholder="scale" value="200">
 	</div>
       </div>
     </form>

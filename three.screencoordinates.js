@@ -1,4 +1,4 @@
-THREE.Object3D.prototype.screenPosition = function (camera) {
+THREE.Object3D.prototype.screenPosition = function (camera, type) {
 
     var obj = this; 
     var vector = new THREE.Vector3();
@@ -7,8 +7,11 @@ THREE.Object3D.prototype.screenPosition = function (camera) {
     var heightHalf = 0.5 * renderer.context.canvas.height;
 
     obj.updateMatrixWorld();
-    
-    vector.setFromMatrixPosition(obj.matrixWorld);
+    if (min === 'min') {
+    } else if (min === 'max') {
+    } else {
+	vector.setFromMatrixPosition(obj.matrixWorld);
+    }
     vector.project(camera);
 
     vector.x =   ( vector.x * widthHalf  ) + widthHalf;
