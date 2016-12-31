@@ -18,9 +18,9 @@ var r_height = window.innerHeight * height_factor;
 
 var xyz = ["x", "y", "z"];
 var colors = [];
-console.log($("#color_template").html());
+// console.log($("#color_template").html());
 var color_template = Handlebars.compile($("#color_template").html());
-console.log(color_template);
+// console.log(color_template);
 
 $('#scale').val(200)
 
@@ -59,14 +59,17 @@ function init() {
     
     var manager = new THREE.LoadingManager();
     manager.onProgress = function ( item, loaded, total ) {
-	console.log( item, loaded, total );
+	// console.log( item, loaded, total );
     };
     
     // model
     var loader = new THREE.OBJLoader( manager );
     var file = './Superstar/Superstar.obj';
-
-    loader.load( file , function ( object ) {
+    $.get('./Superstar/Superstar.obj', function(d){
+	console.log(d.length)
+	object = loader.parse(d);
+    // })
+    // loader.load( file , function ( object ) {
 	var count = 0;
 	object.traverse( function ( child ) {
 	    // count++;
@@ -87,7 +90,7 @@ function init() {
 	    var c = chroma(r * 256, g * 256, b * 256);
 	    // colors.push({ uuid: child.uuid, hex: c.hex(), id: child.id });
 	    // child.material.color.setRGB (r, g, b);
-	    console.log($(this).data('id'));
+	    // console.log($(this).data('id'));
 	    var c = chroma(r * 256, g * 256, b * 256);
 	    $(this).css('background-color', c.hex());
 	    scene.getObjectById($(this).data('id')).material.color.setRGB (r, g, b);
@@ -105,32 +108,33 @@ function init() {
 	// render();
 	// console.log(renderer.domElement)
     } );
+    // ###################################################################
     
     var j = 0;
     if (j === 0) {
     	renderer = new THREE.WebGLRenderer();
     	renderer.setSize( r_width, r_height );
-	console.log(renderer );
-    	console.log(renderer.domElement );
+	// console.log(renderer );
+    	// console.log(renderer.domElement );
     } else if (j === 1) {
-	console.log('here');
+	// console.log('here');
 	renderer = new THREE.SVGRenderer();
 	renderer.shadowMapEnabled = false;
 	renderer.shadowMapSoft = false;
-	console.log( renderer );
+	// console.log( renderer );
 	renderer.setSize( r_width, r_height );
 	renderer.setClearColor( 0xf0f0f0 );
 	renderer.setQuality( 'low' );
-	console.log(renderer.domElement );
+	// console.log(renderer.domElement );
     } else if (j === 2){
     	renderer = new THREE.CanvasRenderer();
-	console.log( renderer );
+	// console.log( renderer );
     	renderer.setClearColor( 0xf0f0f0 );
     	renderer.setPixelRatio( window.devicePixelRatio );
     	renderer.setSize( r_width, r_height );
     }
 
-    console.log('-----------------------------------');
+    // console.log('-----------------------------------');
     container.appendChild( renderer.domElement );
     window.addEventListener( 'resize', onWindowResize, false );
 }
@@ -151,7 +155,7 @@ function onWindowResize() {
 function animate_once(){
     requestAnimationFrame( animate );
     render();
-    console.log(container)
+    // console.log(container)
 }
 
 function animate() {
