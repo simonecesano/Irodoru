@@ -2,24 +2,28 @@
 
 <html>
 <head>
-  
   <title></title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
   
-  <script src="https://code.jquery.com/jquery-3.1.1.min.js" crossorigin="anonymous"></script>
+  <script src="http://code.jquery.com/jquery-3.1.1.min.js" crossorigin="anonymous"></script>
   <script src="http://threejs.org/build/three.min.js"></script>
   
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
-  
-  
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
   <link rel="stylesheet" type="text/css"
-	href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.5/css/bootstrap.min.css" media="screen" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.5/js/bootstrap.min.js"></script>
+	href="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.5/css/bootstrap.min.css" media="screen" />
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.5/js/bootstrap.min.js"></script>
 
   <script src="./jquery.bootstrap-touchspin.min.js"></script>  
   <link rel="stylesheet" type="text/css" href="./jquery.bootstrap-touchspin.min.css" media="screen" />
+
+  <script src="http://threejs.org/build/three.js"></script>
+
   <script src="http://threejs.org/examples/js/loaders/OBJLoader.js"></script>
   <script src="http://threejs.org/examples/js/loaders/FBXLoader.js"></script>
+  <script src="http://threejs.org/examples/js/renderers/Projector.js"></script>
+  <script src="http://threejs.org/examples/js/renderers/SVGRenderer.js"></script>
+  <script src="http://threejs.org/examples/js/renderers/CanvasRenderer.js"></script>
+  
   <script src="./three.screencoordinates.js"></script>
   <script src="./ui.js"></script>
 
@@ -43,9 +47,7 @@
   </style>
 <div class="container-fluid">
   <div class="row">
-    <div id="renderer" class="col-md-6 col-md-offset-0"></div>
-    <div id="top" class="col-md-3 flat"></div>
-    <div id="side" class="col-md-3 flat"></div>
+    <div id="renderer" class="col-md-9 col-md-offset-0"></div>
     <div id="front" class="col-md-3 flat"></div>
     <div id="data" class="col-md-3 flat">
       <table>
@@ -88,20 +90,20 @@
   </div>
   <div class="row">
     <form class="form-inline" id="scene">
-      <div class="col-md-3">
-	<div class="form-group">
-	  <label for="rotation_x">Rotation X&emsp;</label>
-	  <input type="text" class="form-control" id="rotation_x" placeholder="rotation x">
-	</div>
-	<div class="form-group">
-	  <label for="rotation_y">Rotation Y&emsp;</label>
-	  <input type="teyt" class="form-control" id="rotation_y" placeholder="rotation y">
-	</div>
-	<div class="form-group">
-	  <label for="rotation_z">Rotation Z&emsp;</label>
-	  <input type="text" class="form-control" id="rotation_z" placeholder="rotation z">
-	</div>
-      </div>
+      <!-- <div class="col-md-3"> -->
+      <!-- 	<div class="form-group"> -->
+      <!-- 	  <label for="rotation_x">Rotation X&emsp;</label> -->
+      <!-- 	  <input type="text" class="form-control" id="rotation_x" placeholder="rotation x"> -->
+      <!-- 	</div> -->
+      <!-- 	<div class="form-group"> -->
+      <!-- 	  <label for="rotation_y">Rotation Y&emsp;</label> -->
+      <!-- 	  <input type="teyt" class="form-control" id="rotation_y" placeholder="rotation y"> -->
+      <!-- 	</div> -->
+      <!-- 	<div class="form-group"> -->
+      <!-- 	  <label for="rotation_z">Rotation Z&emsp;</label> -->
+      <!-- 	  <input type="text" class="form-control" id="rotation_z" placeholder="rotation z"> -->
+      <!-- 	</div> -->
+      <!-- </div> -->
       <div class="col-md-3">
 	<div class="form-group">
 	  <label for="camera_x">Camera X&emsp;</label>
@@ -166,6 +168,7 @@
 	  <input type="text" class="form-control" id="scale" value="scale" placeholder="scale" value="200">
 	</div>
       </div>
+      <a href="#" id="render" class="button">render</a>
     </form>
   </div>    
 </div>
