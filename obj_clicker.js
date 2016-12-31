@@ -14,14 +14,14 @@ renderer.domElement.addEventListener('mousedown', function(event) {
     vector.unproject(camera);
     // console.log(vector)
     var raycaster = new THREE.Raycaster(
-        // camera.position,
+        camera.position,
         vector.sub(camera.position).normalize()
     );
 
     var intersects = raycaster.intersectObjects(obj.children);
     if (intersects.length) {
         // console.log(intersects.length);
-	// console.log(intersects[0].object.id);
+	// console.log(intersects[1].object.id);
 	var r = Math.random(); var g = Math.random(); var b = Math.random();
 	var c = chroma(r * 256, g * 256, b * 256);
 	intersects[0].object.material.color.setRGB (r, g, b);
