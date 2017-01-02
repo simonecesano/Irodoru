@@ -4,7 +4,7 @@ var delta = clock.getDelta(); // seconds.
 var rotateAngle = Math.PI / 2 * delta;   // pi/2 radians (90 degrees) per second
 var container, stats;
 
-var camera, scene, renderer, look_at, controls;
+var camera, scene, renderer, look_at, controls, box;
 
 var mouseX = 0, mouseY = 0;
 
@@ -25,7 +25,9 @@ var color_template = Handlebars.compile($("#color_template").html());
 $('#scale').val(200)
 
 init();
-animate();
+// animate();
+draw();
+
 
 function init() {
     // container
@@ -33,9 +35,14 @@ function init() {
     $('#renderer').append( container );
 
     // camera
-    camera = new THREE.PerspectiveCamera( 45, r_width / r_height, 1, 2000 );
-    camera.position.z = 600;
-    camera_pos = camera.position;
+    if (1) {
+	camera = new THREE.PerspectiveCamera( 45, r_width / r_height, 1, 2000 );
+	camera.position.z = 600;
+    } else {
+	camera = new THREE.OrthographicCamera( r_width / - 2, r_width / 2, r_height / 2, r_height / - 2, 1, 100 );
+	camera.zoom = 15;
+	camera.updateProjectionMatrix();
+    }
 
     controls = new THREE.TrackballControls(camera);
     controls.rotateSpeed = 1.0;
@@ -52,20 +59,39 @@ function init() {
     var directionalLight = new THREE.DirectionalLight( 0xffeedd );
     directionalLight.position.set( 0, 0, 1 );
     directionalLight.shadowDarkness = 0
+
     scene.add( directionalLight );
+    scene.background = new THREE.Color( 0xcccccc );
+
     
     // texture
-    var material = new THREE.MeshLambertMaterial({ color: 0xCC0000 });
-    
+    var texture = new THREE.TextureLoader().load( './public/textures/XDFG7688.jpg' );
+    texture.wrapS = THREE.RepeatWrapping;
+    texture.wrapT = THREE.RepeatWrapping;
+    texture.repeat.set( 100, 100 );
+
+    var material =
+	new THREE.MeshLambertMaterial({
+	    color: 0xCC0000
+	    // ,
+	    // map: texture
+	});
+	// new THREE.MeshBasicMaterial({
+	//     color: 0xCC0000,
+	//     wireframe: true
+	// });
+
+	
     var manager = new THREE.LoadingManager();
     manager.onProgress = function ( item, loaded, total ) {
-	// console.log( item, loaded, total );
+	console.log( item, loaded, total );
     };
     
     // model
     var loader = new THREE.OBJLoader( manager );
     var file = './Superstar/Superstar.obj';
-    $.get('./Superstar/Superstar.obj', function(d){
+    // file = './cube.obj';
+    $.get(file, function(d){
 	console.log(d.length)
 	object = loader.parse(d);
     // })
@@ -75,7 +101,7 @@ function init() {
 	    // count++;
 	    if ( child instanceof THREE.Mesh ) {
 		child.material = material.clone();
-		// console.log(child.uuid)
+		console.log(child.name)
 		var r = Math.random(); var g = Math.random(); var b = Math.random();
 		var c = chroma(r * 256, g * 256, b * 256);
 		colors.push({ uuid: child.uuid, hex: c.hex(), id: child.id });
@@ -88,10 +114,6 @@ function init() {
 	$('.swatch').on('click', function(e){
 	    var r = Math.random(); var g = Math.random(); var b = Math.random();
 	    var c = chroma(r * 256, g * 256, b * 256);
-	    // colors.push({ uuid: child.uuid, hex: c.hex(), id: child.id });
-	    // child.material.color.setRGB (r, g, b);
-	    // console.log($(this).data('id'));
-	    var c = chroma(r * 256, g * 256, b * 256);
 	    $(this).css('background-color', c.hex());
 	    scene.getObjectById($(this).data('id')).material.color.setRGB (r, g, b);
 	})
@@ -101,12 +123,19 @@ function init() {
         object.scale.z = 600;
         obj = object
 	scene.add( obj );
-	var geometry = new THREE.Geometry();
-	var box = new THREE.Box3().setFromObject( obj );
-	geometry.vertices.push(box.min, box.max);
-	look_at = scene.position;
+	// var geometry = new THREE.Geometry();
+	// geometry.vertices.push(box.min, box.max);
+
+	box = new THREE.Box3().setFromObject( obj );
 	// render();
-	// console.log(renderer.domElement)
+	console.log(box.getCenter())
+	console.log(box.min)
+	console.log(box.max)
+
+	camera.position.y = box.getCenter().y;
+	camera.position.x = box.getCenter().x;
+
+	look_at = box.getCenter(); // scene.position;
     } );
     // ###################################################################
     
@@ -158,6 +187,29 @@ function animate_once(){
     // console.log(container)
 }
 
+function draw() {
+    _.chain(xyz).each(function(e, i){
+	obj.scale[e] = parseFloat($('#scale').val());
+    })
+
+    obj.rotation.y = 90 * Math.PI / 180;
+    var box = new THREE.Box3().setFromObject( obj );
+
+    var look_at = {};
+    
+    _.chain(xyz).map(function(e, i){
+	$('#min .' + e).html(Math.round(100 * box.min[e]) / 100);
+	$('#max .' + e).html(Math.round(100 * box.max[e]) / 100);
+	$('#getSize .' + e).html(Math.round(100 * box.getSize()[e]) / 100);
+
+	camera.position[e] = box.getCenter()[e] + parseFloat($('#camera_' + e).val() || '0');
+	look_at[e]     = box.getCenter()[e] + parseFloat($('#look_at_' + e).val() || '0');
+    })
+
+    camera.lookAt( look_at );
+    renderer.render( scene, camera );
+}
+
 function animate() {
     setTimeout( function() {
         requestAnimationFrame( animate );
@@ -171,32 +223,20 @@ function render() {
     })
 
     obj.rotation.y = 90 * Math.PI / 180;
-    
-    obj.translateX(parseFloat($('#translate_x').val()));
-    obj.translateY(parseFloat($('#translate_y').val()));
-    obj.translateZ(parseFloat($('#translate_z').val()));
-    
     var box = new THREE.Box3().setFromObject( obj );
 
-    // var screen = obj.screenPosition(camera, 'min');
-    var look_at_now = {};
+    var look_at = {};
     
     _.chain(xyz).map(function(e, i){
 	$('#min .' + e).html(Math.round(100 * box.min[e]) / 100);
 	$('#max .' + e).html(Math.round(100 * box.max[e]) / 100);
 	$('#getSize .' + e).html(Math.round(100 * box.getSize()[e]) / 100);
-	// $('#screen .' + e).html(Math.round(100 * screen[e]) / 100);
 
-	camera.position[e] = parseFloat($('#camera_' + e).val() || '0');
-	$('#camera_pos .' + e).html(Math.round(100 * camera.position[e]) / 100);
-
-	camera.position[e] = parseFloat($('#camera_' + e).val() || '0');
-	
-	look_at_now[e] = look_at[e] + parseFloat($('#look_at_' + e).val() || '0');
+	camera.position[e] = box.getCenter()[e] + parseFloat($('#camera_' + e).val() || '0');
+	look_at[e]     = box.getCenter()[e] + parseFloat($('#look_at_' + e).val() || '0');
     })
 
-
-    camera.lookAt( look_at_now );
+    camera.lookAt( look_at );
     renderer.render( scene, camera );
     // console.log(colors);
 }
