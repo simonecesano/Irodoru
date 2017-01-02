@@ -1,0 +1,175 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2//EN">
+
+<html>
+<head>
+  <title></title>
+  <script src="./public/js/underscore-min.js"></script>
+  <script src="https://fastcdn.org/FileSaver.js/1.1.20151003/FileSaver.min.js"></script>
+    
+  <script crossorigin="anonymous" src="./public/js/jquery-3.1.1.min.js"></script>
+  <script src="./public/three/js/three.min.js"></script>
+  
+  <script src="./public/js/tether.min.js"></script>
+  
+  <script src="./public/bootstrap/js/bootstrap.min.js"></script>
+  <link  href="./public/bootstrap/css/bootstrap.min.css" media="screen" rel="stylesheet" type="text/css">
+
+  <script src="./jquery.bootstrap-touchspin.min.js"></script>  
+  <link  href="./jquery.bootstrap-touchspin.min.css" media="screen" rel="stylesheet" type="text/css">
+
+  <script src="./public/three/js/three.js"></script>
+
+  <script src="./public/three/js/OBJLoader.js"></script>
+  <script src="./public/three/js/FBXLoader.js"></script>
+  <script src="./public/three/js/Projector.js"></script>
+  <script src="./public/three/js/SVGRenderer.js"></script>
+  <script src="./public/three/js/CanvasRenderer.js"></script>
+  <script src="./public/three/js/TrackballControls.js"></script>
+
+    <script src="./public/js/chroma.js"></script>
+    <script src="./public/js/handlebars.min.js"></script>
+
+    <script src="./public/js/Iredaware.js"></script>
+
+    
+  <!-- <script src="./three.screencoordinates.js"></script> -->
+  <!-- <script src="./ui.js"></script> -->
+
+  <style>
+    td.x, td.y, td.z { text-align: right; width: 5em }
+  </style>
+</head>
+<body>
+  <script>
+    $(function(){
+	$('label').css('width', '8em')
+	$(".form-control").TouchSpin({ min: -1000000000, max: 1000000000}).css('width', '100%')
+	// $('#top, #side, #front, #data').css('height', window.innerHeight * 0.34)
+	$('#front, #data').css('margin-top', window.innerHeight * 0.01)
+	$('#top, #side').css('margin-bottom', window.innerHeight * 0.01)
+	// $('#top, #front').each(function(i, e){ $(e).width( $(e).width() 0.9 ) })
+	// var color_template = Handlebars.compile($("#color_template").html());
+    })
+</script>
+  </script>
+  <style>
+    .flat { border: thin solid grey } 
+  </style>
+  <script id="color_template" type="text/x-handlebars-template">
+    {{#each colors}}
+    <div style=";display:inline-block" data-uuid="{{ uuid }}" >
+      <div class="swatch" data-id="{{ id }}" style="min-height:3em;min-width:3em;background-color:{{ hex }}">&emsp;</div>
+      <div class="idnr">{{ id }}</div>
+    </div>
+  {{/each}}
+    <hr />
+  </script>
+<div class="container-fluid">
+  <div class="row">
+    <div id="renderer" class="col-md-8 col-md-offset-0"></div>
+    <div class="col-md-1">
+      <form class="form" id="scene">
+	<div class="form-group">
+	  <label for="camera_x">Camera X&emsp;</label>
+	  <input class="form-control" id="camera_x" placeholder="camera x" type="text" value="0">
+	  <label for="camera_y">Camera Y&emsp;</label>
+	  <input class="form-control" id="camera_y" placeholder="camera y" type="text" value="0">
+	  <label for="camera_z">Camera Z&emsp;</label>
+	  <input class="form-control" id="camera_z" placeholder="camera z" type="text" value="60">
+	  <label for="look_at_x">Look at X&emsp;</label>
+	  <input class="form-control" id="look_at_x" placeholder="look at x" type="text" value="0">
+	  <label for="look_at_y">Look at Y&emsp;</label>
+	  <input class="form-control" id="look_at_y" placeholder="look at y" type="text" value="0">
+	  <label for="look_at_z">Look at Z&emsp;</label>
+	  <input class="form-control" id="look_at_z" placeholder="look at z" type="text" value="0">
+	  <label for="light_x">Light X&emsp;</label>
+	  <input type="text" class="form-control" id="light_x" placeholder="light x">
+	  <label for="light_y">Light Y&emsp;</label>
+	  <input type="teyt" class="form-control" id="light_y" placeholder="light y">
+	  <label for="light_z">Light Z&emsp;</label>
+	  <input type="text" class="form-control" id="light_z" placeholder="light z">
+	  <label for="scale">Scale&emsp;</label>
+	  <input type="text" class="form-control" id="scale" value="scale" placeholder="scale" value="200">
+	</div>
+      </form>
+    </div>
+    <div id="data" class="col-md-3">
+      <div style="padding-top:24px" id="colors">
+      </div>
+    </div>
+    <div id="data" class="col-md-3">
+      <table>
+	<tr id="min">
+	  <td>min</td>
+	  <td class="x"></td>
+	  <td class="y"></td>
+	  <td class="z"></td>
+	</tr>
+	<tr id="max">
+	  <td>max</td>
+	  <td class="x"></td>
+	  <td class="y"></td>
+	  <td class="z"></td>
+	</tr>
+	<tr id="getSize">
+	  <td>getSize()</td>
+	  <td class="x"></td>
+	  <td class="y"></td>
+	  <td class="z"></td>
+	</tr>
+	<tr id="screen">
+	  <td>screen</td>
+	  <td class="x"></td>
+	  <td class="y"></td>
+	</tr>
+	<tr id="camera_pos">
+	  <td>camera position</td>
+	  <td class="x"></td>
+	  <td class="y"></td>
+	  <td class="z"></td>
+	</tr>
+	<tr><td>uuid</td><td id="uuid"></td></tr>
+	<tr><td>part count</td><td id="count"></td></tr>
+      </table>
+      <hr />
+    </div>
+    <!-- position table ends -->
+    <div id="data" class="col-md-3">
+      <input class="btn btn-default" id="view_wireframe" type="button" value="Wireframe">
+      <input class="btn btn-default" id="view_colors"    type="button" value="Colors">
+      <input class="btn btn-default" id="view_parts"     type="button" value="Parts">
+      <input class="btn btn-default" id="export"         type="button" value="Export">
+    </div>
+  </div>
+  <div class="row"></div>
+  <script src="./obj_loader.js"></script>
+  <script src="./obj_clicker.js"></script>
+  <script>
+    // var p = new Iredaware.part(12);
+    // console.log(p);
+    $(function(){
+	$('#scene *').change(function(e){
+	    console.log('change');
+	    e.stopPropagation()
+	    console.log(draw());
+	})
+	$('#view_parts').click(function(){
+	    console.log('here');
+	    console.log(idw);
+	    idw.each(function(i){
+		console.log(i)
+		i.material.color.setRGB (1, 0, 0);
+	    }) 
+	})
+	$('#export').click(function(){
+	    var html = $("#renderer div")
+		.attr("version", 1.1)
+		.attr("xmlns", "http://www.w3.org/2000/svg")
+		.html()
+	    var blob = new Blob([html], {type: "image/svg+xml"});
+	  saveAs(blob, "shoe.svg");
+	})
+    });
+  </script>
+</body>
+</html>
