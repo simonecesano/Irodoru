@@ -1,0 +1,9 @@
+- load file with drag-and-drop
+- have multiple scenes, or show object multiple times
+- auto-scaling, auto-views (side, top, 3/4)
+- export SVG
+- Explore MD5 of objects
+- render parts one by one to images
+- select stack
+- group/ungroup parts
+
